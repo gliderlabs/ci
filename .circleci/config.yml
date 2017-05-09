@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: gliderlabs/ci:build-64
+        command: ["/bin/bash"]
+    working_directory: /src
+    steps:
+      - setup_docker_engine
+      - checkout
+      - run:
+          name: Build CI image
+          command: |
+            docker build -t gliderlabs/ci .
+            hub-push gliderlabs/ci build-$CIRCLE_BUILD_NUM
